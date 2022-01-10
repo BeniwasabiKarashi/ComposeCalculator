@@ -12,7 +12,7 @@ class Calculate {
         }
     }
 
-    private fun isInt(result: Float): Boolean {
+    private fun isInt(result: Double): Boolean {
         val regex = """\d+\.+(\d+)""".toRegex()
         return regex.matchEntire(result.toString())?.destructured?.component1().toString() == "0"
     }
@@ -81,7 +81,7 @@ class Calculate {
             }
         }
 
-        if (tempNumStr.toFloatOrNull() != null ){
+        if (tempNumStr.toDoubleOrNull() != null ){
             calculateList.add(tempNumStr)
         }
 
@@ -94,13 +94,13 @@ class Calculate {
         return calculateList.joinToString(separator = " ")
     }
 
-    private fun calculateRpn(formula: String): Float {
+    private fun calculateRpn(formula: String): Double {
         val calculateList = formula.split(" ")
-        val calculateStack = ArrayDeque<Float>()
+        val calculateStack = ArrayDeque<Double>()
         for (i in calculateList.indices) {
             when {
-                calculateList[i].toFloatOrNull() != null -> {
-                    calculateStack.add(calculateList[i].toFloat())
+                calculateList[i].toDoubleOrNull() != null -> {
+                    calculateStack.add(calculateList[i].toDouble())
                 }
                 calculateList[i].contains('+') -> {
                     Log.d("DEBUG LOG: stack",calculateStack.joinToString(separator = " "))
