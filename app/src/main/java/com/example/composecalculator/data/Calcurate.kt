@@ -64,7 +64,7 @@ class Calculate {
                 }
                 '+','-' -> {
                     calculateList.add(tempNumStr)
-                    tempNumStr = ""
+                    tempNumStr = formula[i].toString()
                     if (operatorStack.size > 0) {
                         when(operatorStack.last()) {
                             '+','-','%','×','÷' -> {
@@ -72,7 +72,7 @@ class Calculate {
                             }
                         }
                     }
-                    operatorStack.add(formula[i])
+                    operatorStack.add('+')
                 }
                 else -> {
                     tempNumStr += formula[i]
@@ -107,11 +107,6 @@ class Calculate {
                     val second = calculateStack.removeLast()
                     val first = calculateStack.removeLast()
                     calculateStack.add(first+second)
-                }
-                calculateList[i].contains('-') -> {
-                    val second = calculateStack.removeLast()
-                    val first = calculateStack.removeLast()
-                    calculateStack.add(first-second)
                 }
                 calculateList[i].contains('%') -> {
                     val second = calculateStack.removeLast()
