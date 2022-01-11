@@ -9,9 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.composecalculator.data.Calculate
 import com.example.composecalculator.ui.theme.ComposeCalculatorTheme
+import com.example.composecalculator.ui.theme.Dimens
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +32,7 @@ fun CalculatorLayout() {
 
     var text by remember { mutableStateOf("")}
 
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Dimens.margin16)) {
         TextField(
             value = text,
             onValueChange = {},
@@ -45,8 +45,8 @@ fun CalculatorLayout() {
         )
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(start = 16.dp,end = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.margin16),
+            modifier = Modifier.padding(start = Dimens.margin16,end = Dimens.margin16)
                 .fillMaxWidth()
         ) {
             Button(
@@ -87,8 +87,8 @@ fun CalculatorLayout() {
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(start = 16.dp,end = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.margin16),
+            modifier = Modifier.padding(start = Dimens.margin16,end = Dimens.margin16)
                 .fillMaxWidth()
         ) {
             Button(
@@ -129,8 +129,8 @@ fun CalculatorLayout() {
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(start = 16.dp,end = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.margin16),
+            modifier = Modifier.padding(start = Dimens.margin16,end = Dimens.margin16)
                 .fillMaxWidth()
         ) {
             Button(
@@ -171,8 +171,8 @@ fun CalculatorLayout() {
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(start = 16.dp,end = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.margin16),
+            modifier = Modifier.padding(start = Dimens.margin16,end = Dimens.margin16)
                 .fillMaxWidth()
         ) {
             Button(
@@ -213,8 +213,8 @@ fun CalculatorLayout() {
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(Dimens.margin16),
+            modifier = Modifier.padding(start = Dimens.margin16, end = Dimens.margin16, bottom = Dimens.margin16)
                 .fillMaxWidth()
         ) {
             Button(
@@ -254,4 +254,5 @@ fun CalculatorLayout() {
             }
         }
     }
+
 }
