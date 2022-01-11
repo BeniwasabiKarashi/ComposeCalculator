@@ -23,12 +23,12 @@ class Calculate {
         var tempNumStr = ""
 
         Log.d("DEBUG LOG: formula",formula)
-        for (i in formula.indices) {
-            when (formula[i]) {
+        formula.map { target ->
+            when (target) {
                 '(' -> {
                     calculateList.add(tempNumStr)
                     tempNumStr = ""
-                    operatorStack.add(formula[i])
+                    operatorStack.add(target)
                 }
                 ')' -> {
                     calculateList.add(tempNumStr)
@@ -48,7 +48,7 @@ class Calculate {
                             }
                         }
                     }
-                    operatorStack.add(formula[i])
+                    operatorStack.add(target)
                 }
                 '%' -> {
                     calculateList.add(tempNumStr)
@@ -60,11 +60,11 @@ class Calculate {
                             }
                         }
                     }
-                    operatorStack.add(formula[i])
+                    operatorStack.add(target)
                 }
                 '+','-' -> {
                     calculateList.add(tempNumStr)
-                    tempNumStr = formula[i].toString()
+                    tempNumStr = target.toString()
                     if (operatorStack.size > 0) {
                         when(operatorStack.last()) {
                             '+','-','%','×','÷' -> {
@@ -75,9 +75,8 @@ class Calculate {
                     operatorStack.add('+')
                 }
                 else -> {
-                    tempNumStr += formula[i]
+                    tempNumStr += target
                 }
-
             }
         }
 
@@ -97,34 +96,34 @@ class Calculate {
     private fun calculateRpn(formula: String): Double {
         val calculateList = formula.split(" ")
         val calculateStack = ArrayDeque<Double>()
-        for (i in calculateList.indices) {
+        calculateList.map { target ->
             when {
-                calculateList[i].toDoubleOrNull() != null -> {
-                    calculateStack.add(calculateList[i].toDouble())
+                target.toDoubleOrNull() != null -> {
+                    calculateStack.add(target.toDouble())
                 }
-                calculateList[i].contains('+') -> {
+                target.contains('+') -> {
                     Log.d("DEBUG LOG: stack",calculateStack.joinToString(separator = " "))
                     val second = calculateStack.removeLast()
                     val first = calculateStack.removeLast()
                     calculateStack.add(first+second)
                 }
-                calculateList[i].contains('%') -> {
+                target.contains('%') -> {
                     val second = calculateStack.removeLast()
                     val first = calculateStack.removeLast()
                     calculateStack.add(first%second)
                 }
-                calculateList[i].contains('×') -> {
+                target.contains('×') -> {
                     val second = calculateStack.removeLast()
                     val first = calculateStack.removeLast()
                     calculateStack.add(first*second)
                 }
-                calculateList[i].contains('÷') -> {
+                target.contains('÷') -> {
                     val second = calculateStack.removeLast()
                     val first = calculateStack.removeLast()
                     calculateStack.add(first/second)
                 }
                 else -> {
-                    Log.d("DEBUG LOG: invalid data",calculateList[i])
+                    Log.d("DEBUG LOG: invalid data",target)
                 }
             }
         }
