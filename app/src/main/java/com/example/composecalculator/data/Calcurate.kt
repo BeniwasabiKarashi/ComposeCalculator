@@ -1,6 +1,7 @@
 package com.example.composecalculator.data
 
 import android.util.Log
+import kotlin.math.ceil
 
 class Calculate {
     fun getResultString(formula: String): String {
@@ -13,8 +14,7 @@ class Calculate {
     }
 
     private fun isInt(result: Double): Boolean {
-        val regex = """\d+\.+(\d+)""".toRegex()
-        return regex.matchEntire(result.toString())?.destructured?.component1().toString() == "0"
+        return (result - ceil(result)) == 0.0
     }
 
     private fun inToRpn(formula: String): String {
