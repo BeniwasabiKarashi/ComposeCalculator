@@ -23,63 +23,66 @@ class Calculate {
         var tempNumStr = ""
 
         Log.d("DEBUG LOG: formula",formula)
-        formula.map { target ->
-            when (target) {
-                '(' -> {
-                    calculateList.add(tempNumStr)
-                    tempNumStr = ""
-                    operatorStack.add(target)
-                }
-                ')' -> {
-                    calculateList.add(tempNumStr)
-                    tempNumStr = ""
-                    while (operatorStack.last() != '(') {
-                        calculateList.add(operatorStack.removeLast().toString())
+        try {
+            formula.map { target ->
+                when (target) {
+                    '(' -> {
+                        calculateList.add(tempNumStr)
+                        tempNumStr = ""
+                        operatorStack.add(target)
                     }
-                    operatorStack.removeLast()
-                }
-                '×','÷' -> {
-                    calculateList.add(tempNumStr)
-                    tempNumStr = ""
-                    if (operatorStack.size > 0) {
-                        when(operatorStack.last()) {
-                            '×','÷' -> {
-                                calculateList.add(operatorStack.removeLast().toString())
+                    ')' -> {
+                        calculateList.add(tempNumStr)
+                        tempNumStr = ""
+                        while (operatorStack.last() != '(') {
+                            calculateList.add(operatorStack.removeLast().toString())
+                        }
+                        operatorStack.removeLast()
+                    }
+                    '×', '÷' -> {
+                        calculateList.add(tempNumStr)
+                        tempNumStr = ""
+                        if (operatorStack.size > 0) {
+                            when (operatorStack.last()) {
+                                '×', '÷' -> {
+                                    calculateList.add(operatorStack.removeLast().toString())
+                                }
                             }
                         }
+                        operatorStack.add(target)
                     }
-                    operatorStack.add(target)
-                }
-                '%' -> {
-                    calculateList.add(tempNumStr)
-                    tempNumStr = ""
-                    if (operatorStack.size > 0) {
-                        when(operatorStack.last()) {
-                            '%','×','÷' -> {
-                                calculateList.add(operatorStack.removeLast().toString())
+                    '%' -> {
+                        calculateList.add(tempNumStr)
+                        tempNumStr = ""
+                        if (operatorStack.size > 0) {
+                            when (operatorStack.last()) {
+                                '%', '×', '÷' -> {
+                                    calculateList.add(operatorStack.removeLast().toString())
+                                }
                             }
                         }
+                        operatorStack.add(target)
                     }
-                    operatorStack.add(target)
-                }
-                '+','-' -> {
-                    calculateList.add(tempNumStr)
-                    tempNumStr = target.toString()
-                    if (operatorStack.size > 0) {
-                        when(operatorStack.last()) {
-                            '+','-','%','×','÷' -> {
-                                calculateList.add(operatorStack.removeLast().toString())
+                    '+', '-' -> {
+                        calculateList.add(tempNumStr)
+                        tempNumStr = target.toString()
+                        if (operatorStack.size > 0) {
+                            when (operatorStack.last()) {
+                                '+', '-', '%', '×', '÷' -> {
+                                    calculateList.add(operatorStack.removeLast().toString())
+                                }
                             }
                         }
+                        operatorStack.add('+')
                     }
-                    operatorStack.add('+')
-                }
-                else -> {
-                    tempNumStr += target
+                    else -> {
+                        tempNumStr += target
+                    }
                 }
             }
+        } catch (e: Exception) {
+            Log.e("ERROR LOG: Reverse Polish Notation", e.stackTrace.toString())
         }
-
         if (tempNumStr.toDoubleOrNull() != null ){
             calculateList.add(tempNumStr)
         }
@@ -96,37 +99,41 @@ class Calculate {
     private fun calculateRpn(formula: String): Double {
         val calculateList = formula.split(" ")
         val calculateStack = ArrayDeque<Double>()
-        calculateList.map { target ->
-            when {
-                target.toDoubleOrNull() != null -> {
-                    calculateStack.add(target.toDouble())
-                }
-                target.contains('+') -> {
-                    Log.d("DEBUG LOG: stack",calculateStack.joinToString(separator = " "))
-                    val second = calculateStack.removeLast()
-                    val first = calculateStack.removeLast()
-                    calculateStack.add(first+second)
-                }
-                target.contains('%') -> {
-                    val second = calculateStack.removeLast()
-                    val first = calculateStack.removeLast()
-                    calculateStack.add(first%second)
-                }
-                target.contains('×') -> {
-                    val second = calculateStack.removeLast()
-                    val first = calculateStack.removeLast()
-                    calculateStack.add(first*second)
-                }
-                target.contains('÷') -> {
-                    val second = calculateStack.removeLast()
-                    val first = calculateStack.removeLast()
-                    calculateStack.add(first/second)
-                }
-                else -> {
-                    Log.d("DEBUG LOG: invalid data",target)
+        try {
+            calculateList.map { target ->
+                when {
+                    target.toDoubleOrNull() != null -> {
+                        calculateStack.add(target.toDouble())
+                    }
+                    target.contains('+') -> {
+                        Log.d("DEBUG LOG: stack", calculateStack.joinToString(separator = " "))
+                        val second = calculateStack.removeLast()
+                        val first = calculateStack.removeLast()
+                        calculateStack.add(first + second)
+                    }
+                    target.contains('%') -> {
+                        val second = calculateStack.removeLast()
+                        val first = calculateStack.removeLast()
+                        calculateStack.add(first % second)
+                    }
+                    target.contains('×') -> {
+                        val second = calculateStack.removeLast()
+                        val first = calculateStack.removeLast()
+                        calculateStack.add(first * second)
+                    }
+                    target.contains('÷') -> {
+                        val second = calculateStack.removeLast()
+                        val first = calculateStack.removeLast()
+                        calculateStack.add(first / second)
+                    }
+                    else -> {
+                        Log.d("DEBUG LOG: invalid data", target)
+                    }
                 }
             }
-        }
+        } catch (e: Exception) {
+        Log.e("ERROR LOG: Calculate RPN", e.stackTrace.toString())
+    }
         return calculateStack.last()
     }
 }
